@@ -60,7 +60,7 @@ GetChromosomeBAFs = function(chrom, SNP_file, haplotypeFile, samplename, outfile
   # Just select heterozygous SNPs
   het_variant_data = variant_data[variant_data[,6] != variant_data[,7],]
   
-  chr_name = chr_names[as.numeric(chrom)]
+  chr_name = chrom
   print(chr_name)
   
   # Match allele counts and phasing info
@@ -138,6 +138,6 @@ plot.haplotype.data = function(haplotyped.baf.file, imageFileName, samplename, c
 #' @param no.chrs Number of chromosomes, i.e. the number of files that need to be concatenated
 #' @author dw9
 #' @export
-combine.baf.files = function(inputfile.prefix, inputfile.postfix, outputfile, no.chrs) {
-  concatenateBAFfiles(inputfile.prefix, inputfile.postfix, outputfile, no.chrs)
+combine.baf.files = function(inputfile.prefix, inputfile.postfix, outputfile, chr_names) {
+  concatenateBAFfiles(inputfile.prefix, inputfile.postfix, outputfile, chr_names)
 }
