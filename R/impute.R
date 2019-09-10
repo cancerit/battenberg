@@ -68,7 +68,7 @@ parse.imputeinfofile = function(imputeinfofile, is.male, chrom=NA) {
   chr_names=unique(impute.info$chrom)
   # Subset for a particular chromosome
   if (!is.na(chrom)) {
-    impute.info = impute.info[impute.info$chrom==chr_names[chrom],]
+    impute.info = impute.info[impute.info$chrom==chrom,]
   }
   return(impute.info)
 }
@@ -98,7 +98,6 @@ get.chrom.names = function(imputeinfofile, is.male, chrom=NA) {
 combine.impute.output = function(inputfile.prefix, outputfile, is.male, imputeinfofile, region.size=5000000, chrom=NA) {
   # Read in the impute file information
   impute.info = parse.imputeinfofile(imputeinfofile, is.male, chrom=chrom)
-  
   # Assemble the start and end points of all regions
   all.boundaries = array(0,c(0,2))
   for(r in 1:nrow(impute.info)){
