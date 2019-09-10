@@ -42,9 +42,9 @@ getBAFsAndLogRs = function(tumourAlleleCountsFile.prefix, normalAlleleCountsFile
   
   set.seed(seed)
   
-  input_data = concatenateAlleleCountFiles(tumourAlleleCountsFile.prefix, ".txt", length(chr_names))
-  normal_input_data = concatenateAlleleCountFiles(normalAlleleCountsFile.prefix, ".txt", length(chr_names))
-  allele_data = concatenateG1000SnpFiles(g1000file.prefix, ".txt", length(chr_names), chr_names)
+  input_data = concatenateAlleleCountFiles(tumourAlleleCountsFile.prefix, ".txt", chr_names)
+  normal_input_data = concatenateAlleleCountFiles(normalAlleleCountsFile.prefix, ".txt", chr_names)
+  allele_data = concatenateG1000SnpFiles(g1000file.prefix, ".txt", chr_names)
   
   # Synchronise all the data frames
   chrpos_allele = paste(allele_data[,1], "_", allele_data[,2], sep="")
@@ -157,12 +157,10 @@ getBAFsAndLogRs = function(tumourAlleleCountsFile.prefix, normalAlleleCountsFile
 #' @author dw9, sd11
 #' @export
 generate.impute.input.wgs = function(chrom, tumour.allele.counts.file, normal.allele.counts.file, output.file, imputeinfofile, is.male, problemLociFile=NA, useLociFile=NA, heterozygousFilter=0.1) {
-
   # Read in the 1000 genomes reference file paths for the specified chrom
   impute.info = parse.imputeinfofile(imputeinfofile, is.male, chrom=chrom)
   chr_names = unique(impute.info$chrom)
-  chrom_name = parse.imputeinfofile(imputeinfofile, is.male)$chrom[chrom]
-  
+  chrom_name = chrom
   #print(paste("GenerateImputeInput is.male? ", is.male,sep=""))
   #print(paste("GenerateImputeInput #impute files? ", nrow(impute.info),sep=""))
   
@@ -224,7 +222,7 @@ generate.impute.input.wgs = function(chrom, tumour.allele.counts.file, normal.al
   out.data = cbind(snp.names, known_SNPs[!is.na(indices),1:4], genotypes)
   
   write.table(out.data, file=output.file, row.names=F, col.names=F, quote=F)
-  if(is.na(as.numeric(chrom_name))) {
+  if(is.na(chrom_name)) {
     sample.g.file = paste(dirname(output.file), "/sample_g.txt", sep="")
     #not sure this is necessary, because only the PAR regions are used for males
     #if(is.male){
@@ -254,11 +252,10 @@ gc.correct.wgs = function(Tumour_LogR_file, outfile, correlations_outfile, gc_co
   print("Processing GC content data")
   GC_data = list()
   Tumor_LogR_new = list()
-  for (chrindex in 1:length(chrom_names)) {
-    chrom = chrom_names[chrindex]
-    print(paste("chr =", chrindex))
+  for (chrom in chrom_names) {
+    print(paste("chr =", chrom))
     Tumor_LogR_chr = Tumor_LogR[Tumor_LogR$Chromosome==chrom,]
-    GC_newlist = read.table(paste(gc_content_file_prefix, chrindex, ".txt.gz", sep=""), header=T, stringsAsFactors=F)
+    GC_newlist = read.table(paste(gc_content_file_prefix, chrom, ".txt.gz", sep=""), header=T, stringsAsFactors=F)
     colnames(GC_newlist)[c(1,2)] = c("Chr","Position")
     GC_newlist = GC_newlist[GC_newlist$Position %in% Tumor_LogR_chr$Position,]
     GC_data[[length(GC_data)+1]] = GC_newlist
