@@ -135,9 +135,9 @@ battenberg = function(tumourname, normalname, tumour_data_file, normal_data_file
     # Reconstruct haplotypes 
     # mclapply(1:length(chrom_names), function(chrom) {
     foreach::foreach (i=1:length(chrom_names)) %dopar% {
-      print(chrom)
+      print(chrom_names[i])
       
-      run_haplotyping(chrom=chrom[i], 
+      run_haplotyping(chrom=chrom_names[i], 
                       tumourname=tumourname, 
                       normalname=normalname, 
                       ismale=ismale, 

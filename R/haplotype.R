@@ -21,7 +21,7 @@ GetChromosomeBAFs_SNP6 = function(chrom, alleleFreqFile, haplotypeFile, samplena
   select = match(alleleFreqData[,1], variant_data[,3])
   variant_data = variant_data[select,]
   
-  chr_name = chr_names[as.numeric(chrom)]
+  chr_name = chrom
   print(chr_name)
 
   # Switch the haplotypes where required
@@ -115,7 +115,7 @@ GetChromosomeBAFs = function(chrom, SNP_file, haplotypeFile, samplename, outfile
 #' @author dw9
 #' @export
 plot.haplotype.data = function(haplotyped.baf.file, imageFileName, samplename, chrom, chr_names) {
-  chr_name = chr_names[chrom]
+  chr_name = chrom
   mut_data = read.table(haplotyped.baf.file,sep="\t",header=T)
   
   png(filename = imageFileName, width = 10000, height = 2500, res = 500)
@@ -135,7 +135,7 @@ plot.haplotype.data = function(haplotyped.baf.file, imageFileName, samplename, c
 #' @param inputfile.prefix Prefix of the input files until the chromosome number. The chromosome number will be added internally
 #' @param inputfile.postfix Postfix of the input files from the chromosome number
 #' @param outputfile Full path to where the output will be written
-#' @param no.chrs Number of chromosomes, i.e. the number of files that need to be concatenated
+#' @param chr_names A list of allowed chromosome names.
 #' @author dw9
 #' @export
 combine.baf.files = function(inputfile.prefix, inputfile.postfix, outputfile, chr_names) {

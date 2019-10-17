@@ -176,7 +176,7 @@ battenberg(tumourname=TUMOURNAME,
 # combine.baf.files(inputfile.prefix=paste(TUMOURNAME, "_chr", sep=""), 
 #                   inputfile.postfix="_heterozygousMutBAFs_haplotyped.txt", 
 #                   outputfile=paste(TUMOURNAME, "_heterozygousMutBAFs_haplotyped.txt", sep=""),
-#                   no.chrs=length(chrom_names))
+#                   chr_names=chrom_names)
 # 
 # # Segment the phased and haplotyped BAF data
 # # Call segment.baf.phased.sv when SVs are available - not relevant for SNP6 data
