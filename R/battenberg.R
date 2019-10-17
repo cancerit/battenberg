@@ -154,7 +154,7 @@ battenberg = function(tumourname, normalname, tumour_data_file, normal_data_file
     parallel::stopCluster(clp)
     
     # Combine all the BAF output into a single file
-    combine.baf.files(inputfile.prefix=paste(tumourname, "_chr", sep=""), 
+    combine.baf.files(inputfile.prefix=paste(tumourname, "_", sep=""), 
                       inputfile.postfix="_heterozygousMutBAFs_haplotyped.txt", 
                       outputfile=paste(tumourname, "_heterozygousMutBAFs_haplotyped.txt", sep=""),
                       chr_names=chrom_names)
@@ -195,7 +195,7 @@ battenberg = function(tumourname, normalname, tumour_data_file, normal_data_file
                 logr.file=logr_file, 
                 rho.psi.file=paste(tumourname, "_rho_and_psi.txt",sep=""), 
                 output.file=paste(tumourname,"_subclones.txt", sep=""), 
-                output.figures.prefix=paste(tumourname,"_subclones_chr", sep=""), 
+                output.figures.prefix=paste(tumourname,"_subclones_", sep=""), 
                 output.gw.figures.prefix=paste(tumourname,"_BattenbergProfile", sep=""),
                 masking_output_file=paste(tumourname, "_segment_masking_details.txt", sep=""),
                 sv_breakpoints_file="NA",

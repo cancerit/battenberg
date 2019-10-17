@@ -133,11 +133,11 @@ combine.impute.output = function(inputfile.prefix, outputfile, is.male, imputein
 run_haplotyping = function(chrom, tumourname, normalname, ismale, imputeinfofile, problemloci, impute_exe, min_normal_depth, chrom_names,
                            snp6_reference_info_file=NA, heterozygousFilter=NA) {
   
-  if (file.exists(paste(tumourname, "_alleleFrequencies_chr", chrom, ".txt", sep=""))) {
+  if (file.exists(paste(tumourname, "_alleleFrequencies_", chrom, ".txt", sep=""))) {
     generate.impute.input.wgs(chrom=chrom,
-                              tumour.allele.counts.file=paste(tumourname,"_alleleFrequencies_chr", chrom, ".txt", sep=""),
-                              normal.allele.counts.file=paste(normalname,"_alleleFrequencies_chr", chrom, ".txt", sep=""),
-                              output.file=paste(tumourname, "_impute_input_chr", chrom, ".txt", sep=""),
+                              tumour.allele.counts.file=paste(tumourname,"_alleleFrequencies_", chrom, ".txt", sep=""),
+                              normal.allele.counts.file=paste(normalname,"_alleleFrequencies_", chrom, ".txt", sep=""),
+                              output.file=paste(tumourname, "_impute_input_", chrom, ".txt", sep=""),
                               imputeinfofile=imputeinfofile,
                               is.male=ismale,
                               problemLociFile=problemloci,
@@ -145,7 +145,7 @@ run_haplotyping = function(chrom, tumourname, normalname, ismale, imputeinfofile
   } else {
     generate.impute.input.snp6(infile.germlineBAF=paste(tumourname, "_germlineBAF.tab", sep=""),
                                infile.tumourBAF=paste(tumourname, "_mutantBAF.tab", sep=""),
-                               outFileStart=paste(tumourname, "_impute_input_chr", sep=""),
+                               outFileStart=paste(tumourname, "_impute_input_", sep=""),
                                chrom=chrom,
                                chr_names=chrom_names,
                                problemLociFile=problemloci,
@@ -156,8 +156,8 @@ run_haplotyping = function(chrom, tumourname, normalname, ismale, imputeinfofile
   }
 
   # Run impute on the files
-  run.impute(inputfile=paste(tumourname, "_impute_input_chr", chrom, ".txt", sep=""),
-             outputfile.prefix=paste(tumourname, "_impute_output_chr", chrom, ".txt", sep=""),
+  run.impute(inputfile=paste(tumourname, "_impute_input_", chrom, ".txt", sep=""),
+             outputfile.prefix=paste(tumourname, "_impute_output_", chrom, ".txt", sep=""),
              is.male=ismale,
              imputeinfofile=imputeinfofile,
              impute.exe=impute_exe,
@@ -165,43 +165,43 @@ run_haplotyping = function(chrom, tumourname, normalname, ismale, imputeinfofile
              chrom=chrom)
 
   # As impute runs in windows across a chromosome we need to assemble the output
-  combine.impute.output(inputfile.prefix=paste(tumourname, "_impute_output_chr", chrom, ".txt", sep=""),
-                        outputfile=paste(tumourname, "_impute_output_chr", chrom, "_allHaplotypeInfo.txt", sep=""),
+  combine.impute.output(inputfile.prefix=paste(tumourname, "_impute_output_", chrom, ".txt", sep=""),
+                        outputfile=paste(tumourname, "_impute_output_", chrom, "_allHaplotypeInfo.txt", sep=""),
                         is.male=ismale,
                         imputeinfofile=imputeinfofile,
                         region.size=5000000,
                         chrom=chrom)
 
   # If an allele counts file exists we assume this is a WGS sample and run the corresponding step, otherwise it must be SNP6
-  print(paste(tumourname, "_alleleFrequencies_chr", chrom, ".txt", sep=""))
-  print(file.exists(paste(tumourname, "_alleleFrequencies_chr", chrom, ".txt", sep="")))
-  if (file.exists(paste(tumourname, "_alleleFrequencies_chr", chrom, ".txt", sep=""))) {
+  print(paste(tumourname, "_alleleFrequencies_", chrom, ".txt", sep=""))
+  print(file.exists(paste(tumourname, "_alleleFrequencies_", chrom, ".txt", sep="")))
+  if (file.exists(paste(tumourname, "_alleleFrequencies_", chrom, ".txt", sep=""))) {
     # WGS - Transform the impute output into haplotyped BAFs
     GetChromosomeBAFs(chrom=chrom,
-                      SNP_file=paste(tumourname, "_alleleFrequencies_chr", chrom, ".txt", sep=""),
-                      haplotypeFile=paste(tumourname, "_impute_output_chr", chrom, "_allHaplotypeInfo.txt", sep=""),
+                      SNP_file=paste(tumourname, "_alleleFrequencies_", chrom, ".txt", sep=""),
+                      haplotypeFile=paste(tumourname, "_impute_output_", chrom, "_allHaplotypeInfo.txt", sep=""),
                       samplename=tumourname,
-                      outfile=paste(tumourname, "_chr", chrom, "_heterozygousMutBAFs_haplotyped.txt", sep=""),
+                      outfile=paste(tumourname, "_", chrom, "_heterozygousMutBAFs_haplotyped.txt", sep=""),
                       chr_names=chrom_names,
                       minCounts=min_normal_depth)
   } else {
     print("SNP6 get BAFs")
     # SNP6 - Transform the impute output into haplotyped BAFs
     GetChromosomeBAFs_SNP6(chrom=chrom,
-                           alleleFreqFile=paste(tumourname, "_impute_input_chr", chrom, "_withAlleleFreq.csv", sep=""),
-                           haplotypeFile=paste(tumourname, "_impute_output_chr", chrom, "_allHaplotypeInfo.txt", sep=""),
+                           alleleFreqFile=paste(tumourname, "_impute_input_", chrom, "_withAlleleFreq.csv", sep=""),
+                           haplotypeFile=paste(tumourname, "_impute_output_", chrom, "_allHaplotypeInfo.txt", sep=""),
                            samplename=tumourname,
-                           outputfile=paste(tumourname, "_chr", chrom, "_heterozygousMutBAFs_haplotyped.txt", sep=""),
+                           outputfile=paste(tumourname, "_", chrom, "_heterozygousMutBAFs_haplotyped.txt", sep=""),
                            chr_names=chrom_names)
   }
 
   # Plot what we have until this point
-  plot.haplotype.data(haplotyped.baf.file=paste(tumourname, "_chr", chrom, "_heterozygousMutBAFs_haplotyped.txt", sep=""),
-                      imageFileName=paste(tumourname,"_chr",chrom,"_heterozygousData.png",sep=""),
+  plot.haplotype.data(haplotyped.baf.file=paste(tumourname, "_", chrom, "_heterozygousMutBAFs_haplotyped.txt", sep=""),
+                      imageFileName=paste(tumourname,"_",chrom,"_heterozygousData.png",sep=""),
                       samplename=tumourname,
                       chrom=chrom,
                       chr_names=chrom_names)
 
   # Cleanup temp Impute output
-  unlink(paste(tumourname, "_impute_output_chr", chrom, "*K.txt*", sep=""))
+  unlink(paste(tumourname, "_impute_output_", chrom, "*K.txt*", sep=""))
 }
