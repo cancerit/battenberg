@@ -349,14 +349,14 @@ prepare_wgs = function(chrom_names, tumourbam, normalbam, tumourname, normalname
     # Obtain allele counts for 1000 Genomes locations for both tumour and normal
     foreach::foreach(i=1:length(chrom_names)) %dopar% {
       getAlleleCounts(bam.file=tumourbam,
-                      output.file=paste(tumourname,"_alleleFrequencies_", i, ".txt", sep=""),
+                      output.file=paste(tumourname,"_alleleFrequencies_chr", i, ".txt", sep=""),
                       g1000.loci=paste(g1000allelesprefix, i, ".txt", sep=""),
                       min.base.qual=min_base_qual,
                       min.map.qual=min_map_qual,
                       allelecounter.exe=allelecounter_exe)
   
       getAlleleCounts(bam.file=normalbam,
-                      output.file=paste(normalname,"_alleleFrequencies_", i, ".txt",  sep=""),
+                      output.file=paste(normalname,"_alleleFrequencies_chr", i, ".txt",  sep=""),
                       g1000.loci=paste(g1000allelesprefix, i, ".txt", sep=""),
                       min.base.qual=min_base_qual,
                       min.map.qual=min_map_qual,
@@ -365,8 +365,8 @@ prepare_wgs = function(chrom_names, tumourbam, normalbam, tumourname, normalname
   }
 
   # Obtain BAF and LogR from the raw allele counts
-  getBAFsAndLogRs(tumourAlleleCountsFile.prefix=paste(tumourname,"_alleleFrequencies_", sep=""),
-                  normalAlleleCountsFile.prefix=paste(normalname,"_alleleFrequencies_", sep=""),
+  getBAFsAndLogRs(tumourAlleleCountsFile.prefix=paste(tumourname,"_alleleFrequencies_chr", sep=""),
+                  normalAlleleCountsFile.prefix=paste(normalname,"_alleleFrequencies_chr", sep=""),
                   figuresFile.prefix=paste(tumourname, "_", sep=''),
                   BAFnormalFile=paste(tumourname,"_normalBAF.tab", sep=""),
                   BAFmutantFile=paste(tumourname,"_mutantBAF.tab", sep=""),
