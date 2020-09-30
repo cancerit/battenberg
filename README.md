@@ -1,3 +1,4 @@
+(This repo is a fork of Wedge-lab/battenberg hopefully for BB versions > 2.2.9 we can discontinue this repo and use that directly)
 # Battenberg
 
 This repository contains code for the whole genome sequencing subclonal copy number caller Battenberg, as described in [Nik-Zainal, Van Loo, Wedge, et al. (2012), Cell](https://www.ncbi.nlm.nih.gov/pubmed/22608083).
